@@ -1,13 +1,19 @@
+import Square from './Square';
 
 export default class Board {
   constructor(width, height, $node) {
     this.width = width;
     this.height = height;
     this.$node = $node;
-    this.baseGrid = initGrid(width, height);
+    this.currPiece = null;
 
-    // remove to a fn that updates board
+    // make a get y per row method that loops through the grid, makes an array of the min row occupied per col
+    this.minYperRow = [];
+
+    this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
+
+    this.updatePositions();
   }
 
   gridToString() {
@@ -24,6 +30,34 @@ export default class Board {
 
   copyBaseGrid() {
     this.currGrid = this.baseGrid.map(row => row.slice());
+  }
+
+  addPiece() {
+    // eventually, this will instantiate a random new piece
+    this.currPiece = new Square(this.width, this.height);
+  }
+
+  updateBaseGrid() {
+    this.baseGrid = this.currGrid.map(row => row.slice());
+  }
+
+  updatePositions() {
+    if (!this.currPiece || this.currPiece.hasImpacted()) {
+      this.updateBaseGrid();
+      this.addPiece();
+    }
+
+    this.copyBaseGrid();
+    
+    this.currPiece.moveDown();
+    this.currPiece.cells.forEach(cell => {
+      if (cell.y >= 0) {
+        this.currGrid[cell.y][cell.x] = cell.shape;
+      }
+    });
+
+    this.drawBoard();
+    setTimeout(this.updatePositions.bind(this), 500);
   }
 
 }
