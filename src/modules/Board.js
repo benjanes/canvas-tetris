@@ -1,4 +1,5 @@
 import Square from './Square';
+import Rod from './Rod';
 import { initGrid, drawBorder } from '../helpers';
 
 export default class Board {
@@ -15,7 +16,7 @@ export default class Board {
     this.maxYPerCol = [];
     this.getMaxYPerCol();
 
-    this.updatePositions();
+    this.tick();
   }
 
   gridToString() {
@@ -36,7 +37,7 @@ export default class Board {
 
   addPiece() {
     // eventually, this will instantiate a random new piece
-    this.currPiece = new Square(this.width, this.height);
+    this.currPiece = new Rod(this.width, this.height);
   }
 
   updateBaseGrid() {
@@ -44,23 +45,34 @@ export default class Board {
     this.getMaxYPerCol();
   }
 
-  updatePositions() {
+  handleImpact() {
     if (!this.currPiece || this.currPiece.hasImpacted(this.maxYPerCol)) {
       this.updateBaseGrid();
       this.addPiece();
     }
+  }
 
+  updatePositions(movePieceFn) {
     this.copyBaseGrid();
     
-    this.currPiece.moveDown();
-    this.currPiece.cells.forEach(cell => {
-      if (cell.y >= 0) {
-        this.currGrid[cell.y][cell.x] = cell.shape;
-      }
-    });
+    // this.currPiece.moveDown();
+    if (this.currPiece) {
+      movePieceFn();
+      this.currPiece.cells.forEach(cell => {
+        if (cell.y >= 0) {
+          this.currGrid[cell.y][cell.x] = cell.shape;
+        }
+      });
+    }
 
     this.drawBoard();
-    setTimeout(this.updatePositions.bind(this), 500);
+    // setTimeout(this.updatePositions.bind(this), 500);
+  }
+
+  tick() {
+    this.handleImpact();
+    this.updatePositions(this.currPiece.moveDown.bind(this.currPiece));
+    setTimeout(this.tick.bind(this), 500);
   }
 
   getMaxYPerCol() {
@@ -77,8 +89,11 @@ export default class Board {
   }
 
   handleKeydown(e) {
-    if (e.keyCode === 37) this.currPiece.moveLeft(this.baseGrid);
-    if (e.keyCode === 39) this.currPiece.moveRight(this.baseGrid);
+    if (e.keyCode === 37 || e.keyCode === 39) {
+      if (e.keyCode === 37) this.updatePositions(this.currPiece.moveLeft.bind(this.currPiece, this.baseGrid));
+      if (e.keyCode === 39) this.updatePositions(this.currPiece.moveRight.bind(this.currPiece, this.baseGrid));
+
+    }
   }
 
 }
