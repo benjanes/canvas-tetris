@@ -1,4 +1,5 @@
 import Square from './Square';
+import { initGrid, drawBorder } from '../helpers';
 
 export default class Board {
   constructor(width, height, $node) {
@@ -7,11 +8,12 @@ export default class Board {
     this.$node = $node;
     this.currPiece = null;
 
-    // make a get y per row method that loops through the grid, makes an array of the min row occupied per col
-    this.minYperRow = [];
-
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
+
+    // make a get y per row method that loops through the grid, makes an array of the max row occupied per col
+    this.maxYPerCol = [];
+    this.getMaxYPerCol();
 
     this.updatePositions();
   }
@@ -39,10 +41,11 @@ export default class Board {
 
   updateBaseGrid() {
     this.baseGrid = this.currGrid.map(row => row.slice());
+    this.getMaxYPerCol();
   }
 
   updatePositions() {
-    if (!this.currPiece || this.currPiece.hasImpacted()) {
+    if (!this.currPiece || this.currPiece.hasImpacted(this.maxYPerCol)) {
       this.updateBaseGrid();
       this.addPiece();
     }
@@ -60,20 +63,23 @@ export default class Board {
     setTimeout(this.updatePositions.bind(this), 500);
   }
 
-}
-
-function initGrid(width, height) {
-  let grid = [];
-  for (let h = 0; h < height; h++) {
-    grid.push([]);
-    for (let w = 0; w < width; w++) {
-      grid[h].push(' ');
-    }
+  getMaxYPerCol() {
+    let maxes = [];
+    for (let i = 0; i < this.width; i++) maxes.push(this.height);
+    this.maxYPerCol = this.baseGrid.reduceRight((maxes, row, rowIdx) => {
+      row.forEach((cell, colIdx) => {
+        if (cell !== ' ') {
+          maxes[colIdx] = rowIdx;
+        }
+      });
+      return maxes;
+    }, maxes);
   }
-  return grid;
+
+  handleKeydown(e) {
+    if (e.keyCode === 37) this.currPiece.moveLeft(this.baseGrid);
+    if (e.keyCode === 39) this.currPiece.moveRight(this.baseGrid);
+  }
+
 }
 
-function drawBorder(width) {
-  if (!width) return '--';
-  return '-' + drawBorder(width - 1);
-}

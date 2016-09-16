@@ -1,5 +1,4 @@
 
-
 export default class Piece {
   constructor(maxX, maxY) {
     this.maxX = maxX;
@@ -12,26 +11,27 @@ export default class Piece {
     this.cells.forEach(cell => cell.y += 1);
   }
 
-  moveLeft() {
-    if (!this.isAtBoundary(0)) this.cells.forEach(cell => cell.x -= 1); 
+  moveLeft(currGrid) {
+    if (!this.isAtBoundary(currGrid, 'left')) this.cells.forEach(cell => cell.x -= 1); 
   }
 
-  moveRight(maxWidth) {
-    if (!this.isAtBoundary(this.maxX - 1)) this.cells.forEach(cell => cell.x += 1);
+  moveRight(currGrid) {
+    if (!this.isAtBoundary(currGrid, 'right')) this.cells.forEach(cell => cell.x += 1);
   }
 
-  isAtBoundary(x) {
+  isAtBoundary(grid, direction) {
+    let dir = direction === 'left' ? -1 : 1;
     return this.cells.reduce((isAtEdge, cell) => {
       if (isAtEdge) return true;
-      return cell.x === x;
+      if (cell.y >= 0) return grid[cell.y][cell.x + dir] !== ' ';
+      return false;
     }, false);
   }
 
-  // this can take an obj or list of the currently occupied coords
-  hasImpacted() {
+  hasImpacted(maxYPerCol) {
     return this.cells.reduce((hasImpacted, cell) => {
       if (hasImpacted) return true;
-      return cell.y === this.maxY - 1;
+      return cell.y ===  maxYPerCol[cell.x] - 1;
     }, false);
   }
 }
