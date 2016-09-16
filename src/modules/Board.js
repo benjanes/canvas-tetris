@@ -1,5 +1,8 @@
 import Square from './Square';
 import Rod from './Rod';
+import Elle from './Elle';
+import Tee from './Tee';
+import Squiggle from './Squiggle';
 import { initGrid, drawBorder } from '../helpers';
 
 export default class Board {
@@ -54,8 +57,6 @@ export default class Board {
 
   updatePositions(movePieceFn) {
     this.copyBaseGrid();
-    
-    // this.currPiece.moveDown();
     if (this.currPiece) {
       movePieceFn();
       this.currPiece.cells.forEach(cell => {
@@ -64,9 +65,7 @@ export default class Board {
         }
       });
     }
-
     this.drawBoard();
-    // setTimeout(this.updatePositions.bind(this), 500);
   }
 
   tick() {
@@ -89,10 +88,10 @@ export default class Board {
   }
 
   handleKeydown(e) {
-    if (e.keyCode === 37 || e.keyCode === 39) {
+    if (e.keyCode === 37 || e.keyCode === 39 || e.keyCode === 38) {
       if (e.keyCode === 37) this.updatePositions(this.currPiece.moveLeft.bind(this.currPiece, this.baseGrid));
       if (e.keyCode === 39) this.updatePositions(this.currPiece.moveRight.bind(this.currPiece, this.baseGrid));
-
+      if (e.keyCode === 38) this.updatePositions(this.currPiece.rotate.bind(this.currPiece));
     }
   }
 

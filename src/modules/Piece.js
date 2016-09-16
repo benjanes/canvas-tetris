@@ -34,4 +34,13 @@ export default class Piece {
       return cell.y ===  maxYPerCol[cell.x] - 1;
     }, false);
   }
+
+  hasIllegalValues() {
+    return this.cells.reduce((hasIllegalVals, cell) => {
+      if (hasIllegalVals) return hasIllegalVals;
+      if (cell.x < 0) return 1;
+      if (cell.x > this.maxX - 1) return -1;
+      return false;
+    }, false);
+  }
 }
