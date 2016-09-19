@@ -52,4 +52,23 @@ export default class Piece {
       return grid[changeInY(cellIdx)][changeInX(cellIdx)] !== ' ';
     }, false);
   }
+
+  rotate(currGrid) {
+    let d, illegals;
+
+    d = this.getChangeFns();
+
+    if (!this.isImpactingAnotherPiece(currGrid, d.changeInX, d.changeInY)) {
+      this.cells.forEach((cell, i) => {
+        cell.x = d.changeInX(i);
+        cell.y = d.changeInY(i);
+      });
+    }
+
+    illegals = this.hasIllegalValues();
+    while (illegals) {
+      this.cells.forEach(cell => cell.x += illegals);
+      illegals = this.hasIllegalValues();
+    }
+  }
 }
