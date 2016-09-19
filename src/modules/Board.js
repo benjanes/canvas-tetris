@@ -60,7 +60,7 @@ export default class Board {
     if (this.currPiece) {
       movePieceFn();
       this.currPiece.cells.forEach(cell => {
-        if (cell.y >= 0) {
+        if (cell.y >= 0 && cell.y < this.height) {
           this.currGrid[cell.y][cell.x] = cell.shape;
         }
       });
@@ -88,10 +88,18 @@ export default class Board {
   }
 
   handleKeydown(e) {
-    if (e.keyCode === 37 || e.keyCode === 39 || e.keyCode === 38) {
+    if (e.keyCode === 37 || e.keyCode === 39 || e.keyCode === 38 || e.keyCode === 40) {
       if (e.keyCode === 37) this.updatePositions(this.currPiece.moveLeft.bind(this.currPiece, this.baseGrid));
       if (e.keyCode === 39) this.updatePositions(this.currPiece.moveRight.bind(this.currPiece, this.baseGrid));
       if (e.keyCode === 38) this.updatePositions(this.currPiece.rotate.bind(this.currPiece, this.baseGrid));
+      if (e.keyCode === 40) {
+        if (this.currPiece) {
+          this.handleImpact();
+          this.updatePositions(this.currPiece.moveDown.bind(this.currPiece));
+        } else {
+          return;
+        }
+      }
     }
   }
 
