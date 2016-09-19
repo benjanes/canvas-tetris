@@ -43,4 +43,13 @@ export default class Piece {
       return false;
     }, false);
   }
+
+  isImpactingAnotherPiece(grid, changeInX, changeInY) {
+    return this.cells.reduce((isImpactingAnotherPiece, cell, cellIdx) => {
+      if (isImpactingAnotherPiece) return true;
+      if (!grid[changeInY(cellIdx)]) return false;
+      if (!grid[changeInY(cellIdx)][changeInX(cellIdx)]) return false;
+      return grid[changeInY(cellIdx)][changeInX(cellIdx)] !== ' ';
+    }, false);
+  }
 }

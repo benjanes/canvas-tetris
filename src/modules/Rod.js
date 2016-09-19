@@ -16,25 +16,28 @@ export default class Rod extends Piece {
     ];
   }
 
-  rotate() {
-    let x, y, illegals;
+  rotate(currGrid) {
+    let x, y, illegals, changeInX, changeInY;
+
     if (this.cells[0].x === this.cells[1].x) {
       // turn on side
       x = this.cells[0].x;
       y = this.cells[2].y;
-
-      this.cells.forEach((cell, i) => {
-        cell.x = x + i - 2;
-        cell.y = y;
-      });
+      changeInX = (i) => x + i - 2;
+      changeInY = (i) => y;
+      // });
     } else {
       // make vertical
       x = this.cells[2].x;
       y = this.cells[0].y;
+      changeInX = (i) => x;
+      changeInY = (i) => y + i - 2;
+    }
 
+    if (!this.isImpactingAnotherPiece(currGrid, changeInX, changeInY)) {
       this.cells.forEach((cell, i) => {
-        cell.x = x;
-        cell.y = y + i - 2;
+        cell.x = changeInX(i);
+        cell.y = changeInY(i);
       });
     }
 
@@ -42,7 +45,7 @@ export default class Rod extends Piece {
     while (illegals) {
       this.cells.forEach(cell => cell.x += illegals);
       illegals = this.hasIllegalValues();
-    } 
+    }
   }
 
 }

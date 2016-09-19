@@ -91,7 +91,7 @@ export default class Board {
     if (e.keyCode === 37 || e.keyCode === 39 || e.keyCode === 38) {
       if (e.keyCode === 37) this.updatePositions(this.currPiece.moveLeft.bind(this.currPiece, this.baseGrid));
       if (e.keyCode === 39) this.updatePositions(this.currPiece.moveRight.bind(this.currPiece, this.baseGrid));
-      if (e.keyCode === 38) this.updatePositions(this.currPiece.rotate.bind(this.currPiece));
+      if (e.keyCode === 38) this.updatePositions(this.currPiece.rotate.bind(this.currPiece, this.baseGrid));
     }
   }
 
