@@ -93,12 +93,8 @@ export default class Board {
       if (e.keyCode === 39) this.updatePositions(this.currPiece.moveRight.bind(this.currPiece, this.baseGrid));
       if (e.keyCode === 38) this.updatePositions(this.currPiece.rotate.bind(this.currPiece, this.baseGrid));
       if (e.keyCode === 40) {
-        if (this.currPiece) {
-          this.handleImpact();
-          this.updatePositions(this.currPiece.moveDown.bind(this.currPiece));
-        } else {
-          return;
-        }
+        this.handleImpact();
+        this.updatePositions(this.currPiece.moveDown.bind(this.currPiece));
       }
     }
   }
