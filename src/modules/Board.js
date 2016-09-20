@@ -1,3 +1,8 @@
+// next steps:
+//  - rotation for the squiggle shapes
+//  - handle row completions
+//  - scoring, rate of ticks
+
 import Square from './shapes/Square';
 import Rod from './shapes/Rod';
 import Elle from './shapes/Elle';
