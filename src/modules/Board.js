@@ -9,7 +9,7 @@ import Elle from './shapes/Elle';
 import Tee from './shapes/Tee';
 import SquiggleA from './shapes/SquiggleA';
 import SquiggleB from './shapes/SquiggleB';
-import { initGrid, drawBorder, getRandomShape } from '../helpers';
+import { initGrid, makeRow, drawBorder, getRandomShape } from '../helpers';
 
 export default class Board {
   constructor(width, height, $node) {
@@ -17,7 +17,9 @@ export default class Board {
     this.height = height;
     this.$node = $node;
     this.currPiece = null;
-    this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
+    
+    // this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
+    this.shapes = [Rod];
 
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
@@ -50,12 +52,25 @@ export default class Board {
 
   updateBaseGrid() {
     this.baseGrid = this.currGrid.map(row => row.slice());
-    this.getMaxYPerCol();
+    // this.getMaxYPerCol();
+  }
+
+  handleCompletedRows() {
+    for (let i = 0; i < this.baseGrid.length; i++) {
+      if (!~this.baseGrid[i].indexOf(' ')) {
+        console.log('got a completion');
+        this.baseGrid = makeRow(this.width).concat(this.baseGrid.slice(0, i)).concat(this.baseGrid.slice(i + 1));
+        this.handleCompletedRows();
+        return;
+      }
+    }
   }
 
   handleImpact() {
     if (!this.currPiece || this.currPiece.hasImpacted(this.maxYPerCol)) {
       this.updateBaseGrid();
+      this.handleCompletedRows();
+      this.getMaxYPerCol();
       this.addPiece();
     }
   }

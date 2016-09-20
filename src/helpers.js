@@ -10,6 +10,14 @@ export function initGrid(width, height) {
   return grid;
 }
 
+export function makeRow(width) {
+  let row = [];
+  for (let w = 0; w < width; w++) {
+    row.push(' ');
+  }
+  return [row];
+}
+
 export function drawBorder(width) {
   if (!width) return '--';
   return '-' + drawBorder(width - 1);
