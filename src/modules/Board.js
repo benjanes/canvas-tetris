@@ -9,7 +9,7 @@ import Elle from './shapes/Elle';
 import Tee from './shapes/Tee';
 import SquiggleA from './shapes/SquiggleA';
 import SquiggleB from './shapes/SquiggleB';
-import { initGrid, drawBorder } from '../helpers';
+import { initGrid, drawBorder, getRandomShape } from '../helpers';
 
 export default class Board {
   constructor(width, height, $node) {
@@ -17,6 +17,7 @@ export default class Board {
     this.height = height;
     this.$node = $node;
     this.currPiece = null;
+    this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
 
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
@@ -44,8 +45,7 @@ export default class Board {
   }
 
   addPiece() {
-    // eventually, this will instantiate a random new piece
-    this.currPiece = new SquiggleB(this.width, this.height);
+    this.currPiece = new (getRandomShape.call(this))(this.width, this.height);
   }
 
   updateBaseGrid() {
