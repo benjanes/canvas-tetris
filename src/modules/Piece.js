@@ -8,15 +8,15 @@ export default class Piece {
   }
 
   moveDown() {
-    this.cells.forEach(cell => cell.y += 1);
+    this.cells.forEach(cell => cell.setY.call(cell, cell.y + 1));
   }
 
   moveLeft(currGrid) {
-    if (!this.isAtBoundary(currGrid, 'left')) this.cells.forEach(cell => cell.x -= 1); 
+    if (!this.isAtBoundary(currGrid, 'left')) this.cells.forEach(cell => cell.setX.call(cell, cell.x - 1)); 
   }
 
   moveRight(currGrid) {
-    if (!this.isAtBoundary(currGrid, 'right')) this.cells.forEach(cell => cell.x += 1);
+    if (!this.isAtBoundary(currGrid, 'right')) this.cells.forEach(cell => cell.setX.call(cell, cell.x + 1));
   }
 
   isAtBoundary(grid, direction) {
@@ -60,14 +60,14 @@ export default class Piece {
 
     if (!this.isImpactingAnotherPiece(currGrid, d.changeInX, d.changeInY)) {
       this.cells.forEach((cell, i) => {
-        cell.x = d.changeInX(i);
-        cell.y = d.changeInY(i);
+        cell.setX.call(cell, d.changeInX(i));
+        cell.setY.call(cell, d.changeInY(i));
       });
     }
 
     illegals = this.hasIllegalValues();
     while (illegals) {
-      this.cells.forEach(cell => cell.x += illegals);
+      this.cells.forEach(cell => cell.setX.call(cell, cell.x + illegals));
       illegals = this.hasIllegalValues();
     }
   }

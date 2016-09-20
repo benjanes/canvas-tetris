@@ -40,7 +40,7 @@ export default class Board {
 
   addPiece() {
     // eventually, this will instantiate a random new piece
-    this.currPiece = new Rod(this.width, this.height);
+    this.currPiece = new Elle(this.width, this.height);
   }
 
   updateBaseGrid() {
@@ -58,6 +58,7 @@ export default class Board {
   updatePositions(movePieceFn) {
     this.copyBaseGrid();
     if (this.currPiece) {
+      console.log(this.currPiece.cells);
       movePieceFn();
       this.currPiece.cells.forEach(cell => {
         if (cell.y >= 0 && cell.y < this.height) {
