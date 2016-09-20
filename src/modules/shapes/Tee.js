@@ -1,5 +1,5 @@
-import Piece from './Piece';
-import Cell from './Cell';
+import Piece from '../Piece';
+import Cell from '../Cell';
 
 export default class Tee extends Piece {
   constructor(maxX, maxY) {

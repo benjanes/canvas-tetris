@@ -1,8 +1,9 @@
-import Square from './Square';
-import Rod from './Rod';
-import Elle from './Elle';
-import Tee from './Tee';
-import Squiggle from './Squiggle';
+import Square from './shapes/Square';
+import Rod from './shapes/Rod';
+import Elle from './shapes/Elle';
+import Tee from './shapes/Tee';
+import SquiggleA from './shapes/SquiggleA';
+import SquiggleB from './shapes/SquiggleB';
 import { initGrid, drawBorder } from '../helpers';
 
 export default class Board {
@@ -15,7 +16,6 @@ export default class Board {
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
 
-    // make a get y per row method that loops through the grid, makes an array of the max row occupied per col
     this.maxYPerCol = [];
     this.getMaxYPerCol();
 
@@ -40,7 +40,7 @@ export default class Board {
 
   addPiece() {
     // eventually, this will instantiate a random new piece
-    this.currPiece = new Squiggle(this.width, this.height);
+    this.currPiece = new SquiggleB(this.width, this.height);
   }
 
   updateBaseGrid() {

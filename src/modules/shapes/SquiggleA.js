@@ -1,7 +1,7 @@
-import Piece from './Piece';
-import Cell from './Cell';
+import Piece from '../Piece';
+import Cell from '../Cell';
 
-export default class Squiggle extends Piece {
+export default class SquiggleA extends Piece {
   constructor(maxX, maxY) {
     super(maxX, maxY);
     this.init();
