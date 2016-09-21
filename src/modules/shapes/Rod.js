@@ -18,23 +18,22 @@ export default class Rod extends Piece {
 
   getChangeFns() {
     let x, y, changeInX, changeInY;
-    // console.log(this.cells);
+
     if (this.cells[0].x === this.cells[1].x) {
       // turn on side
-      console.log('to side');
       x = this.cells[0].x;
       y = this.cells[2].y;
-      changeInX = (i) => x + i - 2;
-      changeInY = (i) => y;
+      changeInX = i => x + i - 2;
+      changeInY = i => y;
       // });
     } else {
       // make vertical
-      console.log('to vertical');
       x = this.cells[2].x;
       y = this.cells[0].y;
-      changeInX = (i) => x;
-      changeInY = (i) => y + i - 2;
+      changeInX = i => x;
+      changeInY = i => y + i - 2;
     }
+    
     return { changeInX, changeInY };
   }
 

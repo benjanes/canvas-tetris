@@ -23,38 +23,38 @@ export default class Elle extends Piece {
     y = this.cells[1].y;
 
     if (this.cells[0].y === this.cells[3].y - 1) {
-      changeInX = (i) => {
+      changeInX = i => {
         if (i === 3) return x - 1;
         return x;
       };
-      changeInY = (i) => {
+      changeInY = i => {
         if (i !== 3) return y + 1 - i;
         return y - 1;
       };
     } else if (this.cells[0].x === this.cells[3].x - 1) {
-      changeInX = (i) => {
+      changeInX = i => {
         if (i !== 3) return x + 1 - i;
         return x - 1;
       };
-      changeInY = (i) => {
+      changeInY = i => {
         if (i === 3) return y + 1;
         return y;
       };
     } else if (this.cells[0].y === this.cells[3].y + 1) {
-      changeInX = (i) => {
+      changeInX = i => {
         if (i === 3) return x + 1;
         return x;
       }
-      changeInY = (i) => {
+      changeInY = i => {
         if (i !== 3) return y - 1 + i;
         return y + 1;
       }
     } else if (this.cells[0].x === this.cells[3].x + 1) {
-      changeInX = (i) => {
+      changeInX = i => {
         if (i !== 3) return x - 1 + i;
         return x + 1;
       }
-      changeInY = (i) => {
+      changeInY = i => {
         if (i === 3) return y - 1;
         return y;
       }

@@ -24,41 +24,41 @@ export default class Tee extends Piece {
 
     if (this.cells[0].y > this.cells[3].y && this.cells[0].x < this.cells[3].x) {
       // upside-down T
-      changeInX = (i) => {
+      changeInX = i => {
         if (i === 3) return x + 1;
         return x;
       };
-      changeInY = (i) => {
+      changeInY = i => {
         if (i !== 3) return y - 1 + i;
         return y;
       };
     } else if (this.cells[0].y < this.cells[3].y && this.cells[0].x < this.cells[3].x) {
       // sideways pointing right
-      changeInX = (i) => {
+      changeInX = i => {
         if (i !== 3) return x + 1 - i;
         return x;
       };
-      changeInY = (i) => {
+      changeInY = i => {
         if (i === 3) return y + 1;
         return y;
       };
     } else if (this.cells[0].y < this.cells[3].y && this.cells[0].x > this.cells[3].x) {
       // T
-      changeInX = (i) => {
+      changeInX = i => {
         if (i === 3) return x - 1;
         return x;
       }
-      changeInY = (i) => {
+      changeInY = i => {
         if (i !== 3) return y + 1 - i;
         return y;
       }
     } else if (this.cells[0].y > this.cells[3].y && this.cells[0].x > this.cells[3].x) {
       // sideways pointing left
-      changeInX = (i) => {
+      changeInX = i => {
         if (i !== 3) return x - 1 + i;
         return x;
       }
-      changeInY = (i) => {
+      changeInY = i => {
         if (i === 3) return y - 1;
         return y;
       }

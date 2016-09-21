@@ -45,7 +45,6 @@ export default class Piece {
   }
 
   hasIllegalYVals() {
-    // console.log('checking for illegal y vals');
     return this.cells.reduce((hasIllegalYVals, cell) => {
       if (hasIllegalYVals) return hasIllegalYVals;
       return cell.y > this.maxY - 1;

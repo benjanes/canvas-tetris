@@ -24,21 +24,21 @@ export default class SquiggleA extends Piece {
     y = this.cells[1].y;
 
     if (this.cells[0].y < this.cells[3].y && this.cells[0].x > this.cells[3].x) {
-      changeInX = (i) => {
+      changeInX = i => {
         if (!i) return x + 1;
         if (i === 1 || i === 2) return x;
         return x - 1
       };
-      changeInY = (i) => {
+      changeInY = i => {
         if (!i || i === 1) return y;
         return y - 1;
       };
     } else {
-      changeInX = (i) => {
+      changeInX = i => {
         if (!i || i === 1) return x;
         return x - 1;
       };
-      changeInY = (i) => {
+      changeInY = i => {
         if (!i) return y - 1;
         if (i === 1 || i === 2) return y;
         return y + 1;
