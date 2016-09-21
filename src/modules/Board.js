@@ -96,6 +96,12 @@ export default class Board {
 
   tick() {
     this.handleImpact();
+
+    if (~this.maxYPerCol.indexOf(0)) {
+      this.killGame();
+      return;
+    }
+
     this.updatePositions(this.currPiece.moveDown.bind(this.currPiece));
     setTimeout(this.tick.bind(this), this.rate);
   }
@@ -111,6 +117,30 @@ export default class Board {
       });
       return maxes;
     }, maxes);
+  }
+
+  killGame() {
+    var rowLength = this.width;
+
+    if (this.currGrid[this.height - 1][this.width - 1] !== 'X') {
+      this.currGrid = this.currGrid.map(row => {
+        var place = row.lastIndexOf('X');
+        if (place !== -1 && place <= rowLength - 2) {
+          row[place + 1] = 'X';
+        }
+        return row;
+      });
+
+      for (let i = 0; i < this.height; i++) {
+        if (this.currGrid[i][0] !== 'X') {
+          this.currGrid[i][0] = 'X';
+          break;
+        }
+      }
+
+      this.drawBoard();
+      setTimeout(this.killGame.bind(this), 15);
+    }
   }
 
   handleKeydown(e) {
