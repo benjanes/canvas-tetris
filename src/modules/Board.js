@@ -17,9 +17,9 @@ export default class Board {
     this.height = height;
     this.$node = $node;
     this.currPiece = null;
-    
     // this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
     this.shapes = [Rod];
+    this.score = 0;
 
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
@@ -35,7 +35,7 @@ export default class Board {
       return str + row.reduce((rowStr, cell) => {
         return rowStr + cell;
       }, '|') + '|\n';
-    }, drawBorder(this.width) + '\n') + drawBorder(this.width);
+    }, `${drawBorder(this.width)} SCORE: ${this.score}\n`) + drawBorder(this.width);
   }
 
   drawBoard() {
@@ -52,14 +52,13 @@ export default class Board {
 
   updateBaseGrid() {
     this.baseGrid = this.currGrid.map(row => row.slice());
-    // this.getMaxYPerCol();
   }
 
   handleCompletedRows() {
     for (let i = 0; i < this.baseGrid.length; i++) {
       if (!~this.baseGrid[i].indexOf(' ')) {
-        console.log('got a completion');
         this.baseGrid = makeRow(this.width).concat(this.baseGrid.slice(0, i)).concat(this.baseGrid.slice(i + 1));
+        this.score += 1;
         this.handleCompletedRows();
         return;
       }
