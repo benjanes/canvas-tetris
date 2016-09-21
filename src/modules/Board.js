@@ -1,7 +1,3 @@
-// next steps:
-//  - rotation for the squiggle shapes
-//  - handle row completions
-//  - scoring, rate of ticks
 
 import Square from './shapes/Square';
 import Rod from './shapes/Rod';
@@ -17,9 +13,11 @@ export default class Board {
     this.height = height;
     this.$node = $node;
     this.currPiece = null;
-    // this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
-    this.shapes = [Rod];
+    this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
+
     this.score = 0;
+    this.levelProgress = 0;
+    this.rate = 500;
 
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
@@ -58,7 +56,7 @@ export default class Board {
     for (let i = 0; i < this.baseGrid.length; i++) {
       if (!~this.baseGrid[i].indexOf(' ')) {
         this.baseGrid = makeRow(this.width).concat(this.baseGrid.slice(0, i)).concat(this.baseGrid.slice(i + 1));
-        this.score += 1;
+        this.updatePlayerProgress();
         this.handleCompletedRows();
         return;
       }
@@ -71,6 +69,15 @@ export default class Board {
       this.handleCompletedRows();
       this.getMaxYPerCol();
       this.addPiece();
+    }
+  }
+
+  updatePlayerProgress() {
+    this.score += 1;
+    this.levelProgress += 1;
+    if (this.levelProgress >= 5) {
+      this.levelProgress = 0;
+      this.rate -= 50;
     }
   }
 
@@ -90,7 +97,7 @@ export default class Board {
   tick() {
     this.handleImpact();
     this.updatePositions(this.currPiece.moveDown.bind(this.currPiece));
-    setTimeout(this.tick.bind(this), 500);
+    setTimeout(this.tick.bind(this), this.rate);
   }
 
   getMaxYPerCol() {
