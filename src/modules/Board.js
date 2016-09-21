@@ -18,6 +18,8 @@ export default class Board {
     this.score = 0;
     this.levelProgress = 0;
     this.rate = 500;
+    this.level = 0;
+    this.gameStatus = `LEVEL ${this.level}`;
 
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
@@ -33,7 +35,7 @@ export default class Board {
       return str + row.reduce((rowStr, cell) => {
         return rowStr + cell;
       }, '|') + '|\n';
-    }, `${drawBorder(this.width)} SCORE: ${this.score}\n`) + drawBorder(this.width);
+    }, `${drawBorder(this.width)}\n`) + `${drawBorder(this.width)}\nSCORE: ${this.score}\n${this.gameStatus}`;
   }
 
   drawBoard() {
@@ -76,6 +78,8 @@ export default class Board {
     this.score += 1;
     this.levelProgress += 1;
     if (this.levelProgress >= 5) {
+      this.level += 1;
+      this.gameStatus = `LEVEL ${this.level}`;
       this.levelProgress = 0;
       this.rate -= 50;
     }
@@ -121,6 +125,7 @@ export default class Board {
 
   killGame() {
     var rowLength = this.width;
+    this.gameStatus = 'GAME OVER';
 
     if (this.currGrid[this.height - 1][this.width - 1] !== 'X') {
       this.currGrid = this.currGrid.map(row => {
