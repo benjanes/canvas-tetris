@@ -35,12 +35,20 @@ export default class Piece {
     }, false);
   }
 
-  hasIllegalValues() {
+  hasIllegalXVals() {
     return this.cells.reduce((hasIllegalVals, cell) => {
       if (hasIllegalVals) return hasIllegalVals;
       if (cell.x < 0) return 1;
       if (cell.x > this.maxX - 1) return -1;
       return false;
+    }, false);
+  }
+
+  hasIllegalYVals() {
+    // console.log('checking for illegal y vals');
+    return this.cells.reduce((hasIllegalYVals, cell) => {
+      if (hasIllegalYVals) return hasIllegalYVals;
+      return cell.y > this.maxY - 1;
     }, false);
   }
 
@@ -65,10 +73,14 @@ export default class Piece {
       });
     }
 
-    illegals = this.hasIllegalValues();
+    illegals = this.hasIllegalXVals();
     while (illegals) {
       this.cells.forEach(cell => cell.setX.call(cell, cell.x + illegals));
-      illegals = this.hasIllegalValues();
+      illegals = this.hasIllegalXVals();
+    }
+
+    if (this.hasIllegalYVals()) {
+      this.cells.forEach(cell => cell.setY.call(cell, cell.y - 1));
     }
   }
 }
