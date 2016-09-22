@@ -124,6 +124,8 @@ export default class Board {
   }
 
   killGame() {
+    // remove key down handler when game is over...
+
     var rowLength = this.width;
     this.gameStatus = 'GAME OVER';
 
