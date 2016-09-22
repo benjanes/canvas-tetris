@@ -1,7 +1,7 @@
 {
-  "name": "tetris",
+  "name": "canvas-tetris",
   "version": "1.0.0",
-  "description": "",
+  "description": "HTML5 canvas tetris game",
   "main": "index.js",
   "devDependencies": {
     "babel-cli": "^6.9.0",

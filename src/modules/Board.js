@@ -8,18 +8,25 @@ import SquiggleB from './shapes/SquiggleB';
 import { initGrid, makeRow, drawBorder, getRandomShape } from '../helpers';
 
 export default class Board {
-  constructor(width, height, $node) {
+  constructor(width, height, cellSize, canvas) {
     this.width = width;
     this.height = height;
-    this.$node = $node;
-    this.currPiece = null;
-    this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
 
     this.score = 0;
     this.levelProgress = 0;
     this.rate = 500;
     this.level = 0;
     this.gameStatus = `LEVEL ${this.level}`;
+
+    this.cellSize = cellSize;
+    this.boardHeight = (this.height * cellSize) + 40;
+    this.boardWidth = (this.width * cellSize) + 40;
+    canvas.height = this.boardHeight;
+    canvas.width = this.boardWidth;
+    this.ctx = canvas.getContext('2d');
+
+    this.currPiece = null;
+    this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
 
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
@@ -32,16 +39,17 @@ export default class Board {
     this.tick();
   }
 
-  gridToString() {
-    return this.currGrid.reduce((str, row) => {
-      return str + row.reduce((rowStr, cell) => {
-        return rowStr + cell;
-      }, '|') + '|\n';
-    }, `${drawBorder(this.width)}\n`) + `${drawBorder(this.width)}\nSCORE: ${this.score}\n${this.gameStatus}`;
+  drawBoard() {
+    this.ctx.clearRect(0, 0, this.boardWidth, this.boardHeight);
+    this.currGrid.forEach((row, rowIdx) => this.drawRow(row, rowIdx));
   }
 
-  drawBoard() {
-    this.$node.innerText = this.gridToString();
+  drawRow(row, rowIdx) {
+    row.forEach((cell, colIdx) => {
+      if (!cell.fill) return;
+      this.ctx.fillStyle = cell.fill;
+      this.ctx.fillRect(colIdx * this.cellSize, rowIdx * this.cellSize, this.cellSize, this.cellSize);
+    });
   }
 
   copyBaseGrid() {
@@ -93,7 +101,7 @@ export default class Board {
       movePieceFn();
       this.currPiece.cells.forEach(cell => {
         if (cell.y >= 0 && cell.y < this.height) {
-          this.currGrid[cell.y][cell.x] = cell.shape;
+          this.currGrid[cell.y][cell.x] = cell;
         }
       });
     }

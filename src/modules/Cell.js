@@ -1,7 +1,7 @@
 
 export default class Cell {
-  constructor(shape, x, y) {
-    this.shape = shape;
+  constructor(fill, x, y) {
+    this.fill = fill;
     this.x = x;
     this.y = y;
   }

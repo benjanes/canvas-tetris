@@ -9,10 +9,10 @@ export default class Tee extends Piece {
 
   init() {
     this.cells = [
-      new Cell('T', this.midPoint - 1, -1),
-      new Cell('T', this.midPoint, -1),
-      new Cell('T', this.midPoint + 1, -1),
-      new Cell('T', this.midPoint, -2)
+      new Cell('#000000', this.midPoint - 1, -1),
+      new Cell('#000000', this.midPoint, -1),
+      new Cell('#000000', this.midPoint + 1, -1),
+      new Cell('#000000', this.midPoint, -2)
     ];
   }
 
