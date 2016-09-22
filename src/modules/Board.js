@@ -49,6 +49,8 @@ export default class Board {
       if (!cell.fill) return;
       this.ctx.fillStyle = cell.fill;
       this.ctx.fillRect(colIdx * this.cellSize, rowIdx * this.cellSize, this.cellSize, this.cellSize);
+      this.ctx.strokeStyle = cell.stroke;
+      this.ctx.strokeRect(colIdx * this.cellSize + 1, rowIdx * this.cellSize + 1, this.cellSize - 2, this.cellSize - 2);
     });
   }
 
