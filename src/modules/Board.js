@@ -27,6 +27,8 @@ export default class Board {
     this.maxYPerCol = [];
     this.getMaxYPerCol();
 
+    this.handleKeydown = this.handleKeydown.bind(this);
+    document.addEventListener('keydown', this.handleKeydown);
     this.tick();
   }
 
@@ -124,10 +126,9 @@ export default class Board {
   }
 
   killGame() {
-    // remove key down handler when game is over...
-
     var rowLength = this.width;
     this.gameStatus = 'GAME OVER';
+    document.removeEventListener('keydown', this.handleKeydown);
 
     if (this.currGrid[this.height - 1][this.width - 1] !== 'X') {
       this.currGrid = this.currGrid.map(row => {
