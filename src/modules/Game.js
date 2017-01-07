@@ -50,9 +50,8 @@ export default class Game {
     
     this.ctx.fillStyle = this.pattern;
     
-    this.ctx.strokeRect(this.boardBorder, this.topMargin, (this.cellSize * this.width) + (this.boardBorder * 2) - 2, (this.cellSize * this.height) + (this.boardBorder * 2));
-    this.ctx.fillRect(this.boardBorder + 1, this.topMargin + 1, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
-    
+    this.ctx.fillRect(this.boardBorder + 2, this.topMargin + 2, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
+    this.ctx.strokeRect(this.boardBorder, this.topMargin + 2, (this.cellSize * this.width) + (this.boardBorder * 2) - 2, (this.cellSize * this.height) + (this.boardBorder * 2) - 4);
 
     this.ctx.lineWidth = 1;
     this.drawNextPiece();
@@ -148,11 +147,12 @@ export default class Game {
   initPattern() {
     const pattern = document.createElement('canvas');
     const ctx = pattern.getContext('2d');
+    const x = this.cellSize;
 
-    pattern.width = this.cellSize;
-    pattern.height = this.cellSize;
+    pattern.width = x;
+    pattern.height = x;
     ctx.fillStyle = '#ddd';
-    ctx.strokeRect(0, 0, pattern.width, pattern.height);
+    ctx.strokeRect(x / -2, (x / -2) + 2, x, x);
 
     return ctx.createPattern(pattern, 'repeat');
   }
