@@ -7,7 +7,7 @@ import SquiggleA from './shapes/SquiggleA';
 import SquiggleB from './shapes/SquiggleB';
 import { initGrid, makeRow, drawBorder, getRandomShape } from '../helpers';
 
-export default class Board {
+export default class Game {
   constructor(width, height, cellSize, canvas) {
     this.width = width;
     this.height = height;
@@ -19,14 +19,18 @@ export default class Board {
     this.gameStatus = `LEVEL ${this.level}`;
 
     this.cellSize = cellSize;
-    this.boardHeight = (this.height * cellSize) + 40;
-    this.boardWidth = (this.width * cellSize) + 40;
-    canvas.height = this.boardHeight;
+    this.topMargin = 40;
+    this.boardBorder = 3;
+    this.boardHeight = (this.height * cellSize) + 40 + (2 * this.boardBorder);
+    this.boardWidth = (this.width * cellSize) + 100;
+    canvas.height = this.boardHeight + 2;
     canvas.width = this.boardWidth;
     this.ctx = canvas.getContext('2d');
+    this.pattern = this.initPattern();
 
     this.currPiece = null;
     this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
+    this.nextPiece = new (getRandomShape.call(this))(this.width, this.height);
 
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
@@ -41,16 +45,46 @@ export default class Board {
 
   drawBoard() {
     this.ctx.clearRect(0, 0, this.boardWidth, this.boardHeight);
+    this.ctx.strokeStyle = '#FF0000';
+    this.ctx.lineWidth = this.boardBorder;
+    
+    this.ctx.fillStyle = this.pattern;
+    
+    this.ctx.strokeRect(this.boardBorder, this.topMargin, (this.cellSize * this.width) + (this.boardBorder * 2) - 2, (this.cellSize * this.height) + (this.boardBorder * 2));
+    this.ctx.fillRect(this.boardBorder + 1, this.topMargin + 1, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
+    
+
+    this.ctx.lineWidth = 1;
+    this.drawNextPiece();
     this.currGrid.forEach((row, rowIdx) => this.drawRow(row, rowIdx));
   }
 
   drawRow(row, rowIdx) {
     row.forEach((cell, colIdx) => {
+      let x, y, dimension;
       if (!cell.fill) return;
+      x = colIdx * this.cellSize + (this.boardBorder * 2) - 1;
+      y = rowIdx * this.cellSize + this.topMargin + (this.boardBorder);
+      dimension = this.cellSize;
+
       this.ctx.fillStyle = cell.fill;
-      this.ctx.fillRect(colIdx * this.cellSize, rowIdx * this.cellSize, this.cellSize, this.cellSize);
+      this.ctx.fillRect(x, y, dimension, dimension);
       this.ctx.strokeStyle = cell.stroke;
-      this.ctx.strokeRect(colIdx * this.cellSize + 1, rowIdx * this.cellSize + 1, this.cellSize - 2, this.cellSize - 2);
+      this.ctx.strokeRect(x, y, dimension, dimension);
+
+    });
+  }
+
+  drawNextPiece() {
+
+    this.nextPiece.cells.forEach(cell => {
+      let x, y;
+      x = (this.cellSize * this.width) + (2 * this.boardBorder) + 20 + (cell.staticX * this.cellSize);
+      y = 40 + (cell.staticY * this.cellSize);
+      this.ctx.fillStyle = cell.fill;
+      this.ctx.fillRect(x, y, this.cellSize, this.cellSize);
+      this.ctx.strokeStyle = cell.stroke;
+      this.ctx.strokeRect(x, y, this.cellSize, this.cellSize);
     });
   }
 
@@ -59,7 +93,8 @@ export default class Board {
   }
 
   addPiece() {
-    this.currPiece = new (getRandomShape.call(this))(this.width, this.height);
+    this.currPiece = this.nextPiece;
+    this.nextPiece = new (getRandomShape.call(this))(this.width, this.height);
   }
 
   updateBaseGrid() {
@@ -108,6 +143,18 @@ export default class Board {
       });
     }
     this.drawBoard();
+  }
+
+  initPattern() {
+    const pattern = document.createElement('canvas');
+    const ctx = pattern.getContext('2d');
+
+    pattern.width = this.cellSize;
+    pattern.height = this.cellSize;
+    ctx.fillStyle = '#ddd';
+    ctx.strokeRect(0, 0, pattern.width, pattern.height);
+
+    return ctx.createPattern(pattern, 'repeat');
   }
 
   tick() {

@@ -13,8 +13,8 @@ window.cancelAnimFrame = window.cancelAnimationFrame ||
   window.oCancelAnimationFrame ||
   clearTimeout;
 
-import Board from './modules/Board';
+import Game from './modules/Game';
 
-const tetrisGame = new Board(20, 20, 12, document.getElementById('tetris'));
+const tetrisGame = new Game(20, 40, 12, document.getElementById('tetris'));
 
 // tetrisGame.drawBoard();
