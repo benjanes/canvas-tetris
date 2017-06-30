@@ -15,6 +15,6 @@ window.cancelAnimFrame = window.cancelAnimationFrame ||
 
 import Game from './modules/Game';
 
-const tetrisGame = new Game(20, 40, 12, document.getElementById('tetris'));
+const tetrisGame = new Game(15, 30, 12, document.getElementById('tetris'));
 
 // tetrisGame.drawBoard();

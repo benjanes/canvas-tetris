@@ -50,7 +50,10 @@ export default class Game {
     
     this.ctx.fillStyle = this.pattern;
     
-    this.ctx.fillRect(this.boardBorder + 2, this.topMargin + 2, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
+    this.ctx.translate((this.cellSize / 2) - 1, -3);
+    this.ctx.fillRect(this.boardBorder - 3, this.topMargin + 4, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
+    this.ctx.translate(-1 * (this.cellSize / 2) + 1, 3);
+
     this.ctx.strokeRect(this.boardBorder, this.topMargin + 2, (this.cellSize * this.width) + (this.boardBorder * 2) - 2, (this.cellSize * this.height) + (this.boardBorder * 2) - 4);
 
     this.ctx.lineWidth = 1;
@@ -152,7 +155,9 @@ export default class Game {
     pattern.width = x;
     pattern.height = x;
     ctx.fillStyle = '#ddd';
-    ctx.strokeRect(x / -2, (x / -2) + 2, x, x);
+    // ctx.translate(4,4);
+    ctx.strokeRect(0, 0, x - 2, x - 2);
+    // ctx.translate(-4,-4);
 
     return ctx.createPattern(pattern, 'repeat');
   }
