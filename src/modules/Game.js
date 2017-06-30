@@ -71,6 +71,28 @@ export default class Game {
 
       this.ctx.fillStyle = cell.fill;
       this.ctx.fillRect(x, y, dimension, dimension);
+      
+      // fill a polygon
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, y);
+      this.ctx.lineTo(x + dimension, y);
+      this.ctx.lineTo(x, y + dimension);
+      this.ctx.closePath();
+
+      this.ctx.fillStyle = 'rgba(200,200,200,0.5)';
+      this.ctx.fill();
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, y);
+      this.ctx.lineTo(x + dimension, y);
+      this.ctx.lineTo(x + dimension, y + dimension);
+      this.ctx.closePath();
+
+      this.ctx.fillStyle = 'rgba(100,100,100,0.5)';
+      this.ctx.fill();
+
+      // this.ctx.fillRect(x, y, dimension / 2, dimension);
+      
       this.ctx.strokeStyle = cell.stroke;
       this.ctx.strokeRect(x, y, dimension, dimension);
 
