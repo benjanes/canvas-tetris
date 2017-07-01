@@ -54,7 +54,7 @@ export default class Game {
     this.ctx.fillRect(this.boardBorder - 3, this.topMargin + 6, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
     this.ctx.translate(-1 * (this.cellSize / 2) + 1, 5);
 
-    this.ctx.strokeRect(this.boardBorder, this.topMargin + 1, (this.cellSize * this.width) + (this.boardBorder * 2) - 2, (this.cellSize * this.height) + (this.boardBorder * 2) - 3);
+    this.ctx.strokeRect(this.boardBorder + 1, this.topMargin + 1, (this.cellSize * this.width) + (this.boardBorder * 2) - 3, (this.cellSize * this.height) + (this.boardBorder * 2) - 3);
 
     this.ctx.lineWidth = 1;
     this.drawNextPiece();
