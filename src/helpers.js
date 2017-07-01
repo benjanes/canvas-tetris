@@ -44,3 +44,20 @@ function correctColorComponent(c) {
   if (c < 0) c = 0;
   return c;
 }
+
+export function drawCell(ctx, x, y, fill, d) {
+  ctx.fillStyle = fill;
+  ctx.fillRect(x, y, d, d);
+  drawTriangle(ctx, [[x, y], [x + d, y + d], [x, y + d]], 'rgba(100,100,100,0.25)');
+  drawTriangle(ctx, [[x + d, y], [x, y + d], [x + d, y + d]], 'rgba(100,100,100,0.5)');
+}
+
+export function drawTriangle(ctx, vs, fill) {
+  ctx.beginPath();
+  ctx.moveTo(vs[0][0], vs[0][1]);
+  ctx.lineTo(vs[1][0], vs[1][1]);
+  ctx.lineTo(vs[2][0], vs[2][1]);
+  ctx.closePath();
+  ctx.fillStyle = fill;
+  ctx.fill();
+}
