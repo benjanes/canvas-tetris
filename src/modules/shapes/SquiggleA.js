@@ -10,10 +10,10 @@ export default class SquiggleA extends Piece {
 
   init() {
     this.cells = [
-      new Cell('#FFFF00', '#111', this.midPoint + 1, -3, 1, 0),
-      new Cell('#FFFF00', '#111', this.midPoint + 1, -2, 1, 1),
-      new Cell('#FFFF00', '#111', this.midPoint, -2, 0, 1),
-      new Cell('#FFFF00', '#111', this.midPoint, -1, 0, 2)
+      new Cell('#FFFF00', this.midPoint + 1, -3, 1, 0),
+      new Cell('#FFFF00', this.midPoint + 1, -2, 1, 1),
+      new Cell('#FFFF00', this.midPoint, -2, 0, 1),
+      new Cell('#FFFF00', this.midPoint, -1, 0, 2)
     ];
   }
 

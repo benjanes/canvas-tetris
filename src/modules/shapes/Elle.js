@@ -9,10 +9,10 @@ export default class Elle extends Piece {
 
   init() {
     this.cells = [
-      new Cell('#FF0000', '#000', this.midPoint, -3, 0, 0),
-      new Cell('#FF0000', '#000', this.midPoint, -2, 0, 1),
-      new Cell('#FF0000', '#000', this.midPoint, -1, 0, 2),
-      new Cell('#FF0000', '#000', this.midPoint + 1, -1, 1, 2)
+      new Cell('#FF0000', this.midPoint, -3, 0, 0),
+      new Cell('#FF0000', this.midPoint, -2, 0, 1),
+      new Cell('#FF0000', this.midPoint, -1, 0, 2),
+      new Cell('#FF0000', this.midPoint + 1, -1, 1, 2)
     ];
   }
 

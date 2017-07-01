@@ -50,9 +50,9 @@ export default class Game {
     
     this.ctx.fillStyle = this.pattern;
     
-    this.ctx.translate((this.cellSize / 2) - 1, -3);
-    this.ctx.fillRect(this.boardBorder - 3, this.topMargin + 4, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
-    this.ctx.translate(-1 * (this.cellSize / 2) + 1, 3);
+    this.ctx.translate((this.cellSize / 2) - 1, -5);
+    this.ctx.fillRect(this.boardBorder - 3, this.topMargin + 6, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
+    this.ctx.translate(-1 * (this.cellSize / 2) + 1, 5);
 
     this.ctx.strokeRect(this.boardBorder, this.topMargin + 2, (this.cellSize * this.width) + (this.boardBorder * 2) - 2, (this.cellSize * this.height) + (this.boardBorder * 2) - 4);
 
@@ -75,26 +75,21 @@ export default class Game {
       // fill a polygon
       this.ctx.beginPath();
       this.ctx.moveTo(x, y);
-      this.ctx.lineTo(x + dimension, y);
+      this.ctx.lineTo(x + dimension, y + dimension);
       this.ctx.lineTo(x, y + dimension);
       this.ctx.closePath();
 
-      this.ctx.fillStyle = 'rgba(200,200,200,0.5)';
+      this.ctx.fillStyle = 'rgba(100,100,100,0.25)';
       this.ctx.fill();
 
       this.ctx.beginPath();
-      this.ctx.moveTo(x, y);
-      this.ctx.lineTo(x + dimension, y);
+      this.ctx.moveTo(x + dimension, y);
+      this.ctx.lineTo(x, y + dimension);
       this.ctx.lineTo(x + dimension, y + dimension);
       this.ctx.closePath();
 
       this.ctx.fillStyle = 'rgba(100,100,100,0.5)';
       this.ctx.fill();
-
-      // this.ctx.fillRect(x, y, dimension / 2, dimension);
-      
-      this.ctx.strokeStyle = cell.stroke;
-      this.ctx.strokeRect(x, y, dimension, dimension);
 
     });
   }
@@ -176,9 +171,31 @@ export default class Game {
 
     pattern.width = x;
     pattern.height = x;
-    ctx.fillStyle = '#ddd';
+
+    ctx.fillStyle = '#333';
+    ctx.fillRect(0, 0, x, x);
+
+    ctx.beginPath();
+    ctx.moveTo(0, x);
+    ctx.lineTo(x, 0);
+    ctx.lineTo(x, x);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(200,200,200,0.6)';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(0, x);
+    ctx.lineTo(0 , 0);
+    ctx.lineTo(x, x);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(160,160,160,0.6)';
+    ctx.fill();
+
+
+
+    ctx.strokeStyle = '#ddd';
     // ctx.translate(4,4);
-    ctx.strokeRect(0, 0, x - 2, x - 2);
+    ctx.strokeRect(0, 0, x - 1, x - 1);
     // ctx.translate(-4,-4);
 
     return ctx.createPattern(pattern, 'repeat');
