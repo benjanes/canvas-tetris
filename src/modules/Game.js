@@ -19,9 +19,9 @@ export default class Game {
     this.gameStatus = `LEVEL ${this.level}`;
 
     this.cellSize = cellSize;
-    this.topMargin = 40;
+    this.topMargin = 80;
     this.boardBorder = 3;
-    this.boardHeight = (this.height * cellSize) + 40 + (2 * this.boardBorder);
+    this.boardHeight = (this.height * cellSize) + this.topMargin + (2 * this.boardBorder);
     this.boardWidth = (this.width * cellSize) + 100;
     canvas.height = this.boardHeight + 2;
     canvas.width = this.boardWidth;
@@ -50,14 +50,20 @@ export default class Game {
     
     this.ctx.fillStyle = this.pattern;
     
-    this.ctx.translate((this.cellSize / 2) - 1, -5);
-    this.ctx.fillRect(this.boardBorder - 3, this.topMargin + 6, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
-    this.ctx.translate(-1 * (this.cellSize / 2) + 1, 5);
+    this.ctx.translate((this.cellSize / 2) - 1, -1);
+    this.ctx.fillRect(this.boardBorder - 3, this.topMargin + 2, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
+    this.ctx.translate(-1 * (this.cellSize / 2) + 1, 1);
 
     this.ctx.strokeRect(this.boardBorder + 1, this.topMargin + 1, (this.cellSize * this.width) + (this.boardBorder * 2) - 3, (this.cellSize * this.height) + (this.boardBorder * 2) - 3);
 
     this.ctx.lineWidth = 1;
     this.drawNextPiece();
+
+    this.ctx.font = '20px Geostar Fill';
+    this.ctx.fillStyle = '#fff';
+    this.ctx.fillText(this.gameStatus, 0, 30);
+    this.ctx.fillText(`SCORE: ${this.score}`, 0, 60);
+
     this.currGrid.forEach((row, rowIdx) => this.drawRow(row, rowIdx));
   }
 
