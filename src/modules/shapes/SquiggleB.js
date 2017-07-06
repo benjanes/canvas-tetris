@@ -9,10 +9,10 @@ export default class SquiggleB extends Piece {
 
   init() {
     this.cells = [
-      new Cell('#00FFFF', this.midPoint, -3, 0, 0),
-      new Cell('#00FFFF', this.midPoint, -2, 0, 1),
-      new Cell('#00FFFF', this.midPoint + 1, -2, 1, 1),
-      new Cell('#00FFFF', this.midPoint + 1, -1, 1, 2)
+      new Cell('#00FFFF', this.midPoint, -3, 0.5, 0.5),
+      new Cell('#00FFFF', this.midPoint, -2, 0.5, 1.5),
+      new Cell('#00FFFF', this.midPoint + 1, -2, 1.5, 1.5),
+      new Cell('#00FFFF', this.midPoint + 1, -1, 1.5, 2.5)
     ];
   }
 

@@ -9,10 +9,10 @@ export default class Rod extends Piece {
 
   init() {
     this.cells = [
-      new Cell('#00FF00', this.midPoint, -4, 0, 0),
-      new Cell('#00FF00', this.midPoint, -3, 0, 1),
-      new Cell('#00FF00', this.midPoint, -2, 0, 2),
-      new Cell('#00FF00', this.midPoint, -1, 0, 3)
+      new Cell('#00FF00', this.midPoint, -4, 1, 0),
+      new Cell('#00FF00', this.midPoint, -3, 1, 1),
+      new Cell('#00FF00', this.midPoint, -2, 1, 2),
+      new Cell('#00FF00', this.midPoint, -1, 1, 3)
     ];
   }
 

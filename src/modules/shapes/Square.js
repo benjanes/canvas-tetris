@@ -9,10 +9,10 @@ export default class Square extends Piece {
 
   init() {
     this.cells = [
-      new Cell('#00BFFF', this.midPoint, -2, 0, 0),
-      new Cell('#00BFFF', this.midPoint + 1, -2, 1, 0),
-      new Cell('#00BFFF', this.midPoint, -1, 0, 1),
-      new Cell('#00BFFF', this.midPoint + 1, -1, 1, 1)
+      new Cell('#00BFFF', this.midPoint, -2, 0.5, 1),
+      new Cell('#00BFFF', this.midPoint + 1, -2, 1.5, 1),
+      new Cell('#00BFFF', this.midPoint, -1, 0.5, 2),
+      new Cell('#00BFFF', this.midPoint + 1, -1, 1.5, 2)
     ];
   }
 
