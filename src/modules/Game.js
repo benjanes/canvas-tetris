@@ -1,4 +1,3 @@
-
 import Square from './shapes/Square';
 import Rod from './shapes/Rod';
 import Elle from './shapes/Elle';
@@ -22,7 +21,7 @@ export default class Game {
     this.topMargin = 80;
     this.boardBorder = 3;
     this.boardHeight = (this.height * cellSize) + this.topMargin + (2 * this.boardBorder);
-    this.boardWidth = (this.width * cellSize) + 100;
+    this.boardWidth = (this.width * cellSize) + (cellSize * 6) + (this.boardBorder * 3);
     canvas.height = this.boardHeight + 2;
     canvas.width = this.boardWidth;
     this.ctx = canvas.getContext('2d');
@@ -80,12 +79,22 @@ export default class Game {
   }
 
   drawNextPiece() {
+    const boxX = (this.boardBorder * 2) + (this.width * this.cellSize) + this.cellSize;
+    const boxY = this.topMargin;
+    const dimension = this.cellSize * 5;
+
+    this.ctx.strokeStyle = '#fff';
+    this.ctx.fillStyle = '#888';
+    this.ctx.fillRect(boxX, boxY, dimension, dimension + this.cellSize);
+    this.ctx.strokeRect(boxX, boxY, dimension, dimension + this.cellSize);
+    
     this.nextPiece.cells.forEach(cell => {
       let x, y;
-      x = (this.cellSize * this.width) + (2 * this.boardBorder) + 20 + (cell.staticX * this.cellSize);
-      y = 40 + (cell.staticY * this.cellSize);
+      x = boxX  + this.cellSize+ (cell.staticX * this.cellSize);
+      y = boxY + this.cellSize + (cell.staticY * this.cellSize);
       drawCell(this.ctx, x, y, cell.fill, this.cellSize);
     });
+    
   }
 
   copyBaseGrid() {
