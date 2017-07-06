@@ -87,11 +87,19 @@ export default class Game {
     row.forEach((cell, colIdx) => {
       let x, y;
 
-      if (!cell.fill) return;
+      if (cell !== 'X' && !cell.fill) return;
+
       x = colIdx * this.cellSize + (this.boardBorder * 2) - 1;
       y = rowIdx * this.cellSize + this.topMargin + (this.boardBorder);
 
-      drawCell(this.ctx, x, y, cell.fill, this.cellSize);
+      if (cell === 'X') {
+        this.ctx.strokeStyle = '#ff0000';
+        this.ctx.fillStyle = 'rgba(255,0,0,0.2)';
+        this.ctx.fillRect(x, y, this.cellSize, this.cellSize);
+        this.ctx.strokeRect(x, y, this.cellSize, this.cellSize);
+      } else {
+        drawCell(this.ctx, x, y, cell.fill, this.cellSize);
+      }
     });
   }
 
