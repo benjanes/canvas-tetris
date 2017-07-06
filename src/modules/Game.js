@@ -7,7 +7,7 @@ import SquiggleB from './shapes/SquiggleB';
 import { initGrid, makeRow, drawBorder, getRandomShape, drawTriangle, drawCell } from '../helpers';
 
 export default class Game {
-  constructor(width, height, cellSize, canvas) {
+  constructor(width, height, cellSize, canvas, controls) {
     this.width = width;
     this.height = height;
 
@@ -37,9 +37,26 @@ export default class Game {
     this.maxYPerCol = [];
     this.getMaxYPerCol();
 
+    this.tick = this.tick.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
+    this.startGame = this.startGame.bind(this);
+    this.pauseGame = this.pauseGame.bind(this);
+
+    // draw board once
+    this.drawBoard();
+
     document.addEventListener('keydown', this.handleKeydown);
+    controls.start.addEventListener('click', this.startGame);
+    controls.pause.addEventListener('click', this.pauseGame);
+  }
+
+  startGame() {
+    // repurpose this button to initialize a new game if status == game over
     this.tick();
+  }
+
+  pauseGame() {
+    clearTimeout(this.timer);
   }
 
   drawBoard() {
@@ -183,7 +200,7 @@ export default class Game {
     }
 
     this.updatePositions(this.currPiece.moveDown.bind(this.currPiece));
-    setTimeout(this.tick.bind(this), this.rate);
+    this.timer = setTimeout(this.tick, this.rate);
   }
 
   getMaxYPerCol() {

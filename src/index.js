@@ -1,20 +1,24 @@
-window.requestAnimFrame = window.requestAnimationFrame ||
-  window.webkitRequestAnimationFrame ||
-  window.mozRequestAnimationFrame ||
-  window.msRequestAnimationFrame ||
-  window.oRequestAnimationFrame ||
-  function(callback) {
-    return setTimeout(callback, 1);
-  };
-window.cancelAnimFrame = window.cancelAnimationFrame ||
-  window.webkitCancelAnimationFrame ||
-  window.mozCancelAnimationFrame ||
-  window.msCancelAnimationFrame ||
-  window.oCancelAnimationFrame ||
-  clearTimeout;
+// window.requestAnimFrame = window.requestAnimationFrame ||
+//   window.webkitRequestAnimationFrame ||
+//   window.mozRequestAnimationFrame ||
+//   window.msRequestAnimationFrame ||
+//   window.oRequestAnimationFrame ||
+//   function(callback) {
+//     return setTimeout(callback, 1);
+//   };
+// window.cancelAnimFrame = window.cancelAnimationFrame ||
+//   window.webkitCancelAnimationFrame ||
+//   window.mozCancelAnimationFrame ||
+//   window.msCancelAnimationFrame ||
+//   window.oCancelAnimationFrame ||
+//   clearTimeout;
 
 import Game from './modules/Game';
+const buttons = {
+  start: document.getElementById('start'),
+  pause: document.getElementById('pause')
+};
 
-const tetrisGame = new Game(15, 30, 12, document.getElementById('tetris'));
+const tetrisGame = new Game(15, 30, 12, document.getElementById('tetris'), buttons);
 
 // tetrisGame.drawBoard();
