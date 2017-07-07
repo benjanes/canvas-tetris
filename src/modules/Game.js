@@ -7,28 +7,30 @@ import SquiggleB from './shapes/SquiggleB';
 import { initGrid, makeRow, drawBorder, getRandomShape, drawTriangle, drawCell } from '../helpers';
 
 export default class Game {
-  constructor(width, height, cellSize, canvas, controls) {
+  constructor(width, height, cellSize, $nodes) {
     this.width = width;
     this.height = height;
     this.cellSize = cellSize;
-    this.ctx = canvas.getContext('2d');
+    this.ctx = $nodes.canvas.getContext('2d');
+
+    // DOM nodes
+    this.$wrapper = $nodes.wrapper;
+    this.$startBtn = $nodes.start;
+    this.$pauseBtn = $nodes.pause;
     
     // vars for drawing board
     this.topMargin = 80;
     this.boardBorder = 3;
     this.boardHeight = (this.height * cellSize) + this.topMargin + (2 * this.boardBorder);
     this.boardWidth = (this.width * cellSize) + (cellSize * 6) + (this.boardBorder * 3);
-    canvas.height = this.boardHeight + 2;
-    canvas.width = this.boardWidth;
+    $nodes.canvas.height = this.boardHeight + 2;
+    $nodes.canvas.width = this.boardWidth;
     this.pattern = this.initPattern();
 
     // game pieces
     this.currPiece = null;
     this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
     this.nextPiece = new (getRandomShape.call(this))(this.width, this.height);
-
-    // control whether or not event handlers should fire or just return
-    this.paused = true;
 
     // hard bind core functions
     this.tick = this.tick.bind(this);
@@ -38,8 +40,8 @@ export default class Game {
     this.initNewGame = this.initNewGame.bind(this);
 
     // add listeners to buttons in DOM
-    controls.start.addEventListener('click', this.startGame);
-    controls.pause.addEventListener('click', this.pauseGame);
+    this.$startBtn.addEventListener('click', this.startGame);
+    this.$pauseBtn.addEventListener('click', this.pauseGame);
     
     // prep a game
     this.initNewGame(width, height);
@@ -48,8 +50,8 @@ export default class Game {
   }
 
   startGame() {
-    if (!this.paused) return;
-    this.paused = false;
+    this.$startBtn.setAttribute('disabled', true);
+    this.$pauseBtn.removeAttribute('disabled');
 
     if (this.gameStatus === 'GAME OVER') {
       this.initNewGame(this.width, this.height);
@@ -74,8 +76,8 @@ export default class Game {
   }
 
   pauseGame() {
-    if (this.paused) return;
-    this.paused = true;
+    this.$startBtn.removeAttribute('disabled');
+    this.$pauseBtn.setAttribute('disabled', true);
 
     document.removeEventListener('keydown', this.handleKeydown);
     clearTimeout(this.timer);
@@ -258,7 +260,9 @@ export default class Game {
   killGame() {
     var rowLength = this.width;
     this.gameStatus = 'GAME OVER';
-    this.paused = true;
+    this.$startBtn.removeAttribute('disabled');
+    this.$pauseBtn.setAttribute('disabled', true);
+
     document.removeEventListener('keydown', this.handleKeydown);
 
     if (this.currGrid[this.height - 1][this.width - 1] !== 'X') {

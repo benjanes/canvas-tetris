@@ -15,9 +15,11 @@
 
 import Game from './modules/Game';
 
-const buttons = {
+const $nodes = {
+  canvas: document.getElementById('tetris'),
   start: document.getElementById('start'),
-  pause: document.getElementById('pause')
+  pause: document.getElementById('pause'),
+  wrapper: document.getElementById('wrapper')
 };
 
-const tetrisGame = new Game(15, 30, 12, document.getElementById('tetris'), buttons);
+const tetrisGame = new Game(15, 30, 12, $nodes);
