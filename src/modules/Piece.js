@@ -1,4 +1,3 @@
-
 export default class Piece {
   constructor(maxX, maxY) {
     this.maxX = maxX;

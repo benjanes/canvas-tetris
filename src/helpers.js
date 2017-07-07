@@ -1,4 +1,3 @@
-
 export function initGrid(width, height) {
   let grid = [];
   for (let h = 0; h < height; h++) {

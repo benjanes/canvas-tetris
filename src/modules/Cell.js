@@ -1,5 +1,3 @@
-import { lightenDarkenColor } from '../helpers';
-
 export default class Cell {
   constructor(fill, x, y, staticX, staticY) {
     this.fill = fill;
@@ -16,5 +14,4 @@ export default class Cell {
   setY(y) {
     this.y = y;
   }
-
 }

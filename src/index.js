@@ -14,11 +14,10 @@
 //   clearTimeout;
 
 import Game from './modules/Game';
+
 const buttons = {
   start: document.getElementById('start'),
   pause: document.getElementById('pause')
 };
 
 const tetrisGame = new Game(15, 30, 12, document.getElementById('tetris'), buttons);
-
-// tetrisGame.drawBoard();
