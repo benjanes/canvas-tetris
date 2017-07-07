@@ -10,88 +10,118 @@ export default class Game {
   constructor(width, height, cellSize, canvas, controls) {
     this.width = width;
     this.height = height;
-
-    this.score = 0;
-    this.levelProgress = 0;
-    this.rate = 500;
-    this.level = 0;
-    this.gameStatus = `LEVEL ${this.level}`;
-
     this.cellSize = cellSize;
+    this.ctx = canvas.getContext('2d');
+    
+    // vars for drawing board
     this.topMargin = 80;
     this.boardBorder = 3;
     this.boardHeight = (this.height * cellSize) + this.topMargin + (2 * this.boardBorder);
     this.boardWidth = (this.width * cellSize) + (cellSize * 6) + (this.boardBorder * 3);
     canvas.height = this.boardHeight + 2;
     canvas.width = this.boardWidth;
-    this.ctx = canvas.getContext('2d');
     this.pattern = this.initPattern();
 
+    // game pieces
     this.currPiece = null;
     this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
     this.nextPiece = new (getRandomShape.call(this))(this.width, this.height);
+
+    // control whether or not event handlers should fire or just return
+    this.paused = true;
+
+    // hard bind core functions
+    this.tick = this.tick.bind(this);
+    this.handleKeydown = this.handleKeydown.bind(this);
+    this.startGame = this.startGame.bind(this);
+    this.pauseGame = this.pauseGame.bind(this);
+    this.initNewGame = this.initNewGame.bind(this);
+
+    // add listeners to buttons in DOM
+    controls.start.addEventListener('click', this.startGame);
+    controls.pause.addEventListener('click', this.pauseGame);
+    
+    // prep a game
+    this.initNewGame(width, height);
+    // draw board once
+    this.drawBoard();
+  }
+
+  startGame() {
+    if (!this.paused) return;
+    this.paused = false;
+
+    if (this.gameStatus === 'GAME OVER') {
+      this.initNewGame(this.width, this.height);
+    }
+
+    document.addEventListener('keydown', this.handleKeydown);
+    this.tick();
+  }
+
+  initNewGame(width, height) {
+    this.score = 0;
+    this.level = 0;
+    this.levelProgress = 0; // need to score a certain amount w/in a level to advance
+    this.rate = 500;
+    this.gameStatus = `LEVEL ${this.level}`;
 
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
 
     this.maxYPerCol = [];
     this.getMaxYPerCol();
-
-    this.tick = this.tick.bind(this);
-    this.handleKeydown = this.handleKeydown.bind(this);
-    this.startGame = this.startGame.bind(this);
-    this.pauseGame = this.pauseGame.bind(this);
-
-    // draw board once
-    this.drawBoard();
-
-    document.addEventListener('keydown', this.handleKeydown);
-    controls.start.addEventListener('click', this.startGame);
-    controls.pause.addEventListener('click', this.pauseGame);
-  }
-
-  startGame() {
-    // repurpose this button to initialize a new game if status == game over
-    this.tick();
   }
 
   pauseGame() {
+    if (this.paused) return;
+    this.paused = true;
+
+    document.removeEventListener('keydown', this.handleKeydown);
     clearTimeout(this.timer);
   }
 
   drawBoard() {
+    // clear canvas
     this.ctx.clearRect(0, 0, this.boardWidth, this.boardHeight);
-    this.ctx.strokeStyle = '#aaa';
-    this.ctx.lineWidth = this.boardBorder;
     
-    this.ctx.fillStyle = this.pattern;
-    
+    // draw the bg pattern onto the board
+    this.ctx.fillStyle = this.pattern;    
     this.ctx.translate((this.cellSize / 2) - 1, -1);
     this.ctx.fillRect(this.boardBorder - 3, this.topMargin + 2, (this.cellSize * this.width) + (this.boardBorder * 2) - 4, (this.cellSize * this.height) + (this.boardBorder * 2) - 2);
     this.ctx.translate(-1 * (this.cellSize / 2) + 1, 1);
 
+    // draw board border
+    this.ctx.strokeStyle = '#aaa';
+    this.ctx.lineWidth = this.boardBorder; 
     this.ctx.strokeRect(this.boardBorder + 1, this.topMargin + 1, (this.cellSize * this.width) + (this.boardBorder * 2) - 3, (this.cellSize * this.height) + (this.boardBorder * 2) - 3);
 
+    // reset the line width before drawing next piece shown in upper right
     this.ctx.lineWidth = 1;
     this.drawNextPiece();
 
+    // write out the game status (level or "game over") and current score
     this.ctx.font = '20px Geostar Fill';
     this.ctx.fillStyle = '#fff';
     this.ctx.fillText(this.gameStatus, 0, 30);
     this.ctx.fillText(`SCORE: ${this.score}`, 0, 60);
 
-    this.currGrid.forEach((row, rowIdx) => this.drawRow(row, rowIdx));
+    // draw the pieces onto the board
+    this.currGrid.forEach(this.drawRow, this);
   }
 
   drawRow(row, rowIdx) {
     row.forEach((cell, colIdx) => {
       let x, y;
 
+      // if cell is empty, don't draw anything
       if (cell !== 'X' && !cell.fill) return;
 
+      // find the x and y coords from which to orient the cell
       x = colIdx * this.cellSize + (this.boardBorder * 2) - 1;
       y = rowIdx * this.cellSize + this.topMargin + (this.boardBorder);
 
+      // if 'X', means the game is over -- draw cell for the "game over" animation
       if (cell === 'X') {
         this.ctx.strokeStyle = '#ff0000';
         this.ctx.fillStyle = 'rgba(255,0,0,0.2)';
@@ -108,11 +138,13 @@ export default class Game {
     const boxY = this.topMargin;
     const dimension = this.cellSize * 5;
 
-    this.ctx.strokeStyle = '#fff';
+    // draw the box
     this.ctx.fillStyle = '#888';
     this.ctx.fillRect(boxX, boxY, dimension, dimension + this.cellSize);
+    this.ctx.strokeStyle = '#fff';
     this.ctx.strokeRect(boxX, boxY, dimension, dimension + this.cellSize);
     
+    // then draw the piece
     this.nextPiece.cells.forEach(cell => {
       let x, y;
       x = boxX  + this.cellSize+ (cell.staticX * this.cellSize);
@@ -203,8 +235,7 @@ export default class Game {
     this.handleImpact();
 
     if (~this.maxYPerCol.indexOf(0)) {
-      this.killGame();
-      return;
+      return this.killGame();
     }
 
     this.updatePositions(this.currPiece.moveDown.bind(this.currPiece));
@@ -227,6 +258,7 @@ export default class Game {
   killGame() {
     var rowLength = this.width;
     this.gameStatus = 'GAME OVER';
+    this.paused = true;
     document.removeEventListener('keydown', this.handleKeydown);
 
     if (this.currGrid[this.height - 1][this.width - 1] !== 'X') {
@@ -263,4 +295,3 @@ export default class Game {
   }
 
 }
-
