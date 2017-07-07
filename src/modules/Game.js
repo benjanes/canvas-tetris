@@ -224,10 +224,13 @@ export default class Game {
     ctx.fillStyle = '#333';
     ctx.fillRect(0, 0, x, x);
 
-    drawTriangle(ctx, [[0, x], [x, 0], [x, x]], 'rgba(200,200,200,0.6)');
-    drawTriangle(ctx, [[0, x], [0, 0], [x, x]], 'rgba(160,160,160,0.6)');
+    drawTriangle(ctx, [[1, x - 2], [x - 2, 1], [x - 2, x - 2]], 'rgba(200,200,200,0.6)');
+    drawTriangle(ctx, [[1, x - 2], [1, 1], [x - 2, x - 2]], 'rgba(160,160,160,0.6)');
 
-    ctx.strokeStyle = '#ddd';
+    // drawTriangle(ctx, [[0, x], [x, 0], [x, x]], 'rgba(200,200,200,0.6)');
+    // drawTriangle(ctx, [[0, x], [0, 0], [x, x]], 'rgba(160,160,160,0.6)');
+
+    ctx.strokeStyle = '#aaa';
     ctx.strokeRect(0, 0, x - 1, x - 1);
 
     return ctx.createPattern(pattern, 'repeat');
