@@ -4,16 +4,32 @@
   <title>TETRIS</title>
   <link href="https://fonts.googleapis.com/css?family=Geostar+Fill" rel="stylesheet">
   <style type="text/css">
-  	* {
-  		background-color: #000;
-      color: #fff;
+    * {
       text-transform: uppercase;
       font-family: "Geostar Fill", monospace;
-  	}
+      background-color: #000;
+      color: #fff;
+      transition: all 0.4s;
+    }
+    body {
+      /*background-color: #000;
+      color: #fff;*/
+      margin: 0;
+      min-height: 100vh;
+    }
+    button {
+      /*background-color: #000;
+      color: #fff;*/
+      text-transform: uppercase;
+    }
     .wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
+      background-color: transparent;
+    }
+    header, main, canvas, div {
+      background-color: transparent;
     }
   </style>
 </head>
@@ -25,7 +41,7 @@
     <main>
       <canvas id="tetris"></canvas>
       <div>
-        <button id="start">Play</button>
+        <button id="start">New Game</button>
         <button id="pause" disabled>Pause</button>
       </div>
     </main>

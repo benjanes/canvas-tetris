@@ -4,7 +4,8 @@ import Elle from './shapes/Elle';
 import Tee from './shapes/Tee';
 import SquiggleA from './shapes/SquiggleA';
 import SquiggleB from './shapes/SquiggleB';
-import { initGrid, makeRow, drawBorder, getRandomShape, drawTriangle, drawCell } from '../helpers';
+import { initGrid, makeRow, drawBorder, getRandomShape, drawTriangle, drawCell, applyStyles } from '../helpers';
+import styles from '../styles.js';
 
 export default class Game {
   constructor(width, height, cellSize, $nodes) {
@@ -14,6 +15,9 @@ export default class Game {
     this.ctx = $nodes.canvas.getContext('2d');
 
     // DOM nodes
+    this.$nodes = Object.keys($nodes).map(key => $nodes[key]).filter($node => $node !== $nodes.canvas);
+
+    console.log(this.$nodes);
     this.$wrapper = $nodes.wrapper;
     this.$startBtn = $nodes.start;
     this.$pauseBtn = $nodes.pause;
@@ -32,29 +36,70 @@ export default class Game {
     this.shapes = [Square, Rod, Elle, Tee, SquiggleA, SquiggleB];
     this.nextPiece = new (getRandomShape.call(this))(this.width, this.height);
 
+    this.gameMsg = 'Start a game';
+
     // hard bind core functions
     this.tick = this.tick.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
     this.startGame = this.startGame.bind(this);
     this.pauseGame = this.pauseGame.bind(this);
     this.initNewGame = this.initNewGame.bind(this);
+    this.handleStatusUpdate = this.handleStatusUpdate.bind(this);
 
     // add listeners to buttons in DOM
     this.$startBtn.addEventListener('click', this.startGame);
     this.$pauseBtn.addEventListener('click', this.pauseGame);
     
+    // use proxy for this.status
+    this.status = new Proxy({
+      level: 1,
+      isOver: true
+    }, {
+      set: this.handleStatusUpdate
+    });
+
     // prep a game
     this.initNewGame(width, height);
     // draw board once
     this.drawBoard();
   }
 
+  handleStatusUpdate(status, key, value) {
+    let msg;
+
+    if (key === 'level') {
+      // update this.gameMsg
+      this.gameMsg = `LEVEL: ${value}`;
+      // update class name on wrapper
+      // this.$wrapper.className = 'level1';
+      // console.log(styles[value])
+
+      applyStyles(this.$nodes, styles[value]);
+      // this.$wrapper.style.backgroundColor = styles[value].backgroundColor;
+
+      // update this.rate
+      this.rate = 550 - (value * 50);
+    }
+
+    if (key === 'isOver') {
+      // update this.gameMsg
+      this.gameMsg = value ? 'GAME OVER' : 'LEVEL: 1';
+      // update button copy
+      this.$startBtn.innerText = value ? 'New Game' : 'Play';
+    }
+
+    status[key] = value;
+    return true;
+  }
+
   startGame() {
     this.$startBtn.setAttribute('disabled', true);
     this.$pauseBtn.removeAttribute('disabled');
 
-    if (this.gameStatus === 'GAME OVER') {
+    if (this.status.isOver) {
       this.initNewGame(this.width, this.height);
+      this.status.isOver = false;
+      this.status.level = 1;
     }
 
     document.addEventListener('keydown', this.handleKeydown);
@@ -63,10 +108,8 @@ export default class Game {
 
   initNewGame(width, height) {
     this.score = 0;
-    this.level = 0;
     this.levelProgress = 0; // need to score a certain amount w/in a level to advance
     this.rate = 500;
-    this.gameStatus = `LEVEL ${this.level}`;
 
     this.baseGrid = initGrid(width, height);
     this.copyBaseGrid();
@@ -105,7 +148,7 @@ export default class Game {
     // write out the game status (level or "game over") and current score
     this.ctx.font = '20px Geostar Fill';
     this.ctx.fillStyle = '#fff';
-    this.ctx.fillText(this.gameStatus, 0, 30);
+    this.ctx.fillText(this.gameMsg, 0, 30);
     this.ctx.fillText(`SCORE: ${this.score}`, 0, 60);
 
     // draw the pieces onto the board
@@ -192,11 +235,9 @@ export default class Game {
   updatePlayerProgress() {
     this.score += 1;
     this.levelProgress += 1;
-    if (this.levelProgress >= 5) {
-      this.level += 1;
-      this.gameStatus = `LEVEL ${this.level}`;
+    if (this.levelProgress >= 1) {
+      this.status.level += 1;
       this.levelProgress = 0;
-      this.rate -= 50;
     }
   }
 
@@ -262,7 +303,8 @@ export default class Game {
 
   killGame() {
     var rowLength = this.width;
-    this.gameStatus = 'GAME OVER';
+    // this.gameStatus = 'GAME OVER';
+    this.status.isOver = true;
     this.$startBtn.removeAttribute('disabled');
     this.$pauseBtn.setAttribute('disabled', true);
 
