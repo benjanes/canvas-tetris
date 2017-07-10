@@ -7,19 +7,20 @@
     * {
       text-transform: uppercase;
       font-family: "Geostar Fill", monospace;
-      background-color: #000;
+      background-color: transparent;
       color: #fff;
       transition: all 0.4s;
     }
+    html {
+      background-image: linear-gradient(90deg, #fff 0%, #000 40%, #000 60%, #fff 100%);
+    }
     body {
-      /*background-color: #000;
-      color: #fff;*/
       margin: 0;
       min-height: 100vh;
+      background-color: #000;
+      overflow: hidden;
     }
     button {
-      /*background-color: #000;
-      color: #fff;*/
       text-transform: uppercase;
     }
     .wrapper {
@@ -28,8 +29,11 @@
       align-items: center;
       background-color: transparent;
     }
-    header, main, canvas, div {
-      background-color: transparent;
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 72px 0 2px;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -40,7 +44,7 @@
     </header>
     <main>
       <canvas id="tetris"></canvas>
-      <div>
+      <div class="buttons">
         <button id="start">New Game</button>
         <button id="pause" disabled>Pause</button>
       </div>
