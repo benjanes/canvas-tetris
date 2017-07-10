@@ -64,6 +64,6 @@ export function drawTriangle(ctx, vs, fill) {
 export function applyStyles($nodes, styles) {
   $nodes.forEach($node => {
     $node.style.backgroundColor = styles.backgroundColor;
-    $node.style.color = styles.color;
+    // $node.style.color = styles.color;
   });
 }

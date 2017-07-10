@@ -70,12 +70,8 @@ export default class Game {
     if (key === 'level') {
       // update this.gameMsg
       this.gameMsg = `LEVEL: ${value}`;
-      // update class name on wrapper
-      // this.$wrapper.className = 'level1';
-      // console.log(styles[value])
 
-      applyStyles(this.$nodes, styles[value]);
-      // this.$wrapper.style.backgroundColor = styles[value].backgroundColor;
+      applyStyles([this.$wrapper], styles[value]);
 
       // update this.rate
       this.rate = 550 - (value * 50);
@@ -235,7 +231,7 @@ export default class Game {
   updatePlayerProgress() {
     this.score += 1;
     this.levelProgress += 1;
-    if (this.levelProgress >= 1) {
+    if (this.levelProgress >= 5) {
       this.status.level += 1;
       this.levelProgress = 0;
     }
