@@ -15,7 +15,7 @@
 
 import Game from './modules/Game';
 
-function initGame() {
+window.initGame = function() {
 	const $nodes = {
 	  canvas: document.getElementById('tetris'),
 	  start: document.getElementById('start'),
@@ -25,4 +25,4 @@ function initGame() {
 	};
 
 	const tetrisGame = new Game(15, 30, 12, $nodes);
-}
+};
