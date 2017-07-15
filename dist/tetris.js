@@ -52,12 +52,16 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var $nodes = {
-	  canvas: document.getElementById('tetris'),
-	  start: document.getElementById('start'),
-	  pause: document.getElementById('pause'),
-	  wrapper: document.getElementsByTagName('body')[0],
-	  title: document.getElementsByTagName('h1')[0]
+	window.initGame = function () {
+		var $nodes = {
+			canvas: document.getElementById('tetris'),
+			start: document.getElementById('start'),
+			pause: document.getElementById('pause'),
+			wrapper: document.getElementsByTagName('body')[0],
+			title: document.getElementsByTagName('h1')[0]
+		};
+
+		var tetrisGame = new _Game2.default(15, 30, 12, $nodes);
 	}; // window.requestAnimFrame = window.requestAnimationFrame ||
 	//   window.webkitRequestAnimationFrame ||
 	//   window.mozRequestAnimationFrame ||
@@ -72,8 +76,6 @@
 	//   window.msCancelAnimationFrame ||
 	//   window.oCancelAnimationFrame ||
 	//   clearTimeout;
-
-	var tetrisGame = new _Game2.default(15, 30, 12, $nodes);
 
 /***/ }),
 /* 1 */
@@ -137,7 +139,6 @@
 	      return $node !== $nodes.canvas;
 	    });
 
-	    console.log(this.$nodes);
 	    this.$wrapper = $nodes.wrapper;
 	    this.$startBtn = $nodes.start;
 	    this.$pauseBtn = $nodes.pause;
