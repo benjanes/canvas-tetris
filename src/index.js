@@ -15,12 +15,14 @@
 
 import Game from './modules/Game';
 
-const $nodes = {
-  canvas: document.getElementById('tetris'),
-  start: document.getElementById('start'),
-  pause: document.getElementById('pause'),
-  wrapper: document.getElementsByTagName('body')[0],
-  title: document.getElementsByTagName('h1')[0]
-};
+window.initGame = function() {
+	const $nodes = {
+	  canvas: document.getElementById('tetris'),
+	  start: document.getElementById('start'),
+	  pause: document.getElementById('pause'),
+	  wrapper: document.getElementsByTagName('body')[0],
+	  title: document.getElementsByTagName('h1')[0]
+	};
 
-const tetrisGame = new Game(15, 30, 12, $nodes);
+	const tetrisGame = new Game(15, 30, 12, $nodes);
+};

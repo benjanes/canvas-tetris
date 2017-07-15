@@ -2,14 +2,13 @@
 <html>
 <head>
   <title>TETRIS</title>
-  <link href="https://fonts.googleapis.com/css?family=Geostar+Fill" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Geostar+Fill" rel="stylesheet"> -->
   <style type="text/css">
     * {
       text-transform: uppercase;
       font-family: "Geostar Fill", monospace;
       background-color: transparent;
       color: #fff;
-      transition: all 0.4s;
     }
     html {
       background-image: linear-gradient(90deg, #fff 0%, #000 40%, #000 60%, #fff 100%);
@@ -18,7 +17,12 @@
       margin: 0;
       min-height: 100vh;
       background-color: #000;
+      opacity: 0;
       overflow: hidden;
+      transition: opacity 0.4s, background-color 0.4s;
+    }
+    .wf-active body, .wf-fontinactive body {
+      opacity: 1;
     }
     button {
       text-transform: uppercase;
@@ -51,5 +55,16 @@
     </main>
   </div>
   <script src="dist/tetris.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Geostar Fill']
+      },
+      active: initGame,
+      fontinactive: initGame,
+      timeout: 1500
+    });
+  </script>
 </body>
 </html>

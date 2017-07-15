@@ -17,7 +17,6 @@ export default class Game {
     // DOM nodes
     this.$nodes = Object.keys($nodes).map(key => $nodes[key]).filter($node => $node !== $nodes.canvas);
 
-    console.log(this.$nodes);
     this.$wrapper = $nodes.wrapper;
     this.$startBtn = $nodes.start;
     this.$pauseBtn = $nodes.pause;
